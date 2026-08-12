@@ -1,11 +1,25 @@
 const menuBtn=document.querySelector(".menu-btn");
-const nav=document.querySelector("nav");
-if(menuBtn){menuBtn.addEventListener("click",()=>nav.classList.toggle("open"))}
-document.querySelectorAll("nav a").forEach(a=>a.addEventListener("click",()=>nav.classList.remove("open")));
+const nav=document.querySelector("#nav");
+if(menuBtn){
+  menuBtn.addEventListener("click",()=>{
+    const open=nav.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded",open);
+    menuBtn.textContent=open?"✕":"☰";
+  });
+}
+document.querySelectorAll("nav a").forEach(a=>a.addEventListener("click",()=>{
+  nav.classList.remove("open");
+  menuBtn?.setAttribute("aria-expanded","false");
+  if(menuBtn) menuBtn.textContent="☰";
+}));
+
 document.getElementById("year").textContent=new Date().getFullYear();
 
-document.getElementById("contactForm").addEventListener("submit",function(e){
+document.getElementById("contactForm")?.addEventListener("submit",(e)=>{
   e.preventDefault();
-  alert("धन्यवाद! आपका संदेश प्राप्त हुआ। वास्तविक ईमेल/WhatsApp सेवा जोड़ने के बाद संदेश सीधे आपकी संस्था तक भेजा जा सकता है।");
-  this.reset();
+  const form=e.currentTarget;
+  const name=form.querySelector("input").value.trim();
+  const message=form.querySelector("textarea").value.trim();
+  const text=`Hello Sath Chale Ham Foundation,%0A%0AName: ${encodeURIComponent(name)}%0AMessage: ${encodeURIComponent(message)}`;
+  window.open(`https://wa.me/917011893028?text=${text}`,"_blank");
 });
